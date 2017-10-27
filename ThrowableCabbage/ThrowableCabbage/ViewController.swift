@@ -14,15 +14,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
-    private var cabbageNode = SCNNode()
     private let configuration = ARWorldTrackingConfiguration()
     private var planes = [String:Plane]()
-    
+    private var cabbages = [SCNNode]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupScene()
-        self.setupCabbage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,7 +40,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         self.sceneView.autoenablesDefaultLighting = true
         
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
-        let scene = SCNScene()
+        guard let scene = SCNScene(named: "art.scnassets/Cabbage2.scn") else { return }
         self.sceneView.scene = scene
     }
 
@@ -53,15 +51,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     private func getCabbageNode() -> SCNNode {
-        guard let node = self.sceneView.scene.rootNode.childNode(withName: "Cabbage2", recursively: true) else { return SCNNode() }
+        guard let node = self.sceneView.scene.rootNode.childNode(withName: "kapusta", recursively: true) else {
+            return SCNNode() }
         return node
     }
     
-    private func setupCabbage() {
-        self.cabbageNode = getCabbageNode()
-        self.cabbageNode.position = SCNVector3Make(0, 0, -10)
-        self.sceneView.scene.rootNode.addChildNode(self.cabbageNode)
-    }
     
     private func setupDebugOptions() {
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
@@ -97,4 +91,31 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
         self.planes.removeValue(forKey: anchor.identifier.uuidString)
     }
+    
+    @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
+        let tapPoint = sender.location(in: self.sceneView)
+        let result = self.sceneView.hitTest(tapPoint, types: ARHitTestResult.ResultType.existingPlaneUsingExtent)
+        if result.isEmpty { return }
+        let hitResult = result.first
+        self.insertGeometry(hitPoint: hitResult)
+    }
+    
+    private func insertGeometry(hitPoint: ARHitTestResult?) {
+        guard let hitPoint = hitPoint else { return }
+       
+        let cabbageNode = self.getCabbageNode()
+        cabbageNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        cabbageNode.physicsBody?.mass = 2.0
+        cabbageNode.physicsBody?.categoryBitMask = 1 << 1
+        
+        let insertionYOffset: Float = 0.5
+        let xPos = hitPoint.worldTransform.columns.3.x
+        let yPos = hitPoint.worldTransform.columns.3.y
+        let zPos = hitPoint.worldTransform.columns.3.z
+        cabbageNode.position = SCNVector3Make(xPos, yPos + insertionYOffset, zPos)
+        
+        self.sceneView.scene.rootNode.addChildNode(cabbageNode)
+        self.cabbages.append(cabbageNode)
+    }
 }
+

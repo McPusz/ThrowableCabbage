@@ -35,24 +35,27 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     private func setupScene() {
         self.sceneView.delegate = self
-        self.planes = [String:Plane]()
         self.sceneView.showsStatistics = true
-        self.sceneView.autoenablesDefaultLighting = true
-        
+        //lightning
+        self.sceneView.autoenablesDefaultLighting = false
+        self.sceneView.automaticallyUpdatesLighting = false
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         guard let scene = SCNScene(named: "art.scnassets/Cabbage2.scn") else { return }
         self.sceneView.scene = scene
+        self.setupWorldBorder()
     }
 
     private func setupSession() {
         let congifuration = ARWorldTrackingConfiguration()
         congifuration.planeDetection = .horizontal
+        configuration.isLightEstimationEnabled = true
         self.sceneView.session.run(congifuration)
     }
     
     private func getCabbageNode() -> SCNNode {
         guard let node = self.sceneView.scene.rootNode.childNode(withName: "kapusta", recursively: true) else {
             return SCNNode() }
+        node.name = "kapusta"
         return node
     }
     
@@ -61,18 +64,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         self.sceneView.automaticallyUpdatesLighting = true
         self.sceneView.showsStatistics = true
-    }
-
-    private func createPlaneNode(anchor: ARPlaneAnchor) -> SCNNode {
-        let planeWidth = CGFloat(anchor.extent.x)
-        let planeHeight = CGFloat(anchor.extent.z)
-        
-        let planeGeometry = SCNPlane(width: planeWidth, height: planeHeight)
-        let planeNode = SCNNode(geometry: planeGeometry)
-        planeNode.position = SCNVector3Make(anchor.center.x, 0, anchor.center.z)
-        //set planeNode from vertical to horizontal
-        planeNode.transform = SCNMatrix4MakeRotation(.pi/2, 1, 0, 0)
-        return planeNode
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -92,6 +83,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         self.planes.removeValue(forKey: anchor.identifier.uuidString)
     }
     
+    private func setupWorldBorder() {
+        let bottomBorderNode = WorldBorder()
+        self.sceneView.scene.rootNode.addChildNode(bottomBorderNode)
+        self.sceneView.scene.physicsWorld.contactDelegate = self
+    }
+    
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         let tapPoint = sender.location(in: self.sceneView)
         let result = self.sceneView.hitTest(tapPoint, types: ARHitTestResult.ResultType.existingPlaneUsingExtent)
@@ -101,21 +98,36 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     private func insertGeometry(hitPoint: ARHitTestResult?) {
-        guard let hitPoint = hitPoint else { return }
-       
-        let cabbageNode = self.getCabbageNode()
-        cabbageNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-        cabbageNode.physicsBody?.mass = 2.0
-        cabbageNode.physicsBody?.categoryBitMask = 1 << 1
         
+        guard let hitPoint = hitPoint else { return }
+
         let insertionYOffset: Float = 0.5
         let xPos = hitPoint.worldTransform.columns.3.x
         let yPos = hitPoint.worldTransform.columns.3.y
         let zPos = hitPoint.worldTransform.columns.3.z
-        cabbageNode.position = SCNVector3Make(xPos, yPos + insertionYOffset, zPos)
-        
-        self.sceneView.scene.rootNode.addChildNode(cabbageNode)
+        let position = SCNVector3Make(xPos, yPos + insertionYOffset, zPos)
+        let cabbageNode = Cabbage(at: position, fromSceneView: self.sceneView)
         self.cabbages.append(cabbageNode)
+        self.sceneView.scene.rootNode.addChildNode(cabbageNode)
+    }
+}
+
+extension ViewController: SCNPhysicsContactDelegate {
+    
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+
+        if self.nodeAIsWorld(contact: contact) {
+            contact.nodeB.removeFromParentNode()
+        } else {
+            contact.nodeA.removeFromParentNode()
+        }
+    }
+    
+    private func nodeAIsWorld(contact: SCNPhysicsContact) -> Bool {
+        guard let bitMaskA = contact.nodeA.physicsBody?.categoryBitMask, let bitMaskB = contact.nodeB.physicsBody?.categoryBitMask else { return false }
+        let contactMask = bitMaskA | bitMaskB
+        guard contactMask == (CollisionCategory.world.rawValue | CollisionCategory.cabbage.rawValue) else { return false }
+        return contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.world.rawValue
     }
 }
 

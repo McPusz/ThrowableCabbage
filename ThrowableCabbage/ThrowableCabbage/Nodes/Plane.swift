@@ -27,7 +27,11 @@ class Plane: SCNNode {
         
         let planeNode = SCNNode(geometry: self.planeGeometry)
         planeNode.position = SCNVector3Make(anchor.center.x, 0, anchor.center.z)
+        guard let geometry = self.planeGeometry else { return }
+        let planeShape = SCNPhysicsShape(geometry: geometry, options: nil)
+        planeNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: planeShape)
         planeNode.transform = SCNMatrix4MakeRotation(-.pi/2, 1, 0, 0)
+        planeNode.name = "GridPlane"
         self.setTextureScale()
         self.addChildNode(planeNode)
     }

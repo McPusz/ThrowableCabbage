@@ -40,8 +40,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         self.sceneView.autoenablesDefaultLighting = false
         self.sceneView.automaticallyUpdatesLighting = false
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
-        guard let scene = SCNScene(named: "art.scnassets/Cabbage2.scn") else { return }
-        self.sceneView.scene = scene
+        self.sceneView.scene = SCNScene()
         self.setupWorldBorder()
     }
 
@@ -51,14 +50,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         configuration.isLightEstimationEnabled = true
         self.sceneView.session.run(congifuration)
     }
-    
-    private func getCabbageNode() -> SCNNode {
-        guard let node = self.sceneView.scene.rootNode.childNode(withName: "kapusta", recursively: true) else {
-            return SCNNode() }
-        node.name = "kapusta"
-        return node
-    }
-    
     
     private func setupDebugOptions() {
         self.sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]

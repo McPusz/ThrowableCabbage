@@ -17,6 +17,9 @@
 		958224601FA76EEC005DA0F3 /* WorldBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582245F1FA76EEC005DA0F3 /* WorldBorder.swift */; };
 		958224631FA779FD005DA0F3 /* CollisionCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958224621FA779FD005DA0F3 /* CollisionCategory.swift */; };
 		95A64D1C1FA740630048EB6B /* Cabbage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A64D1B1FA740630048EB6B /* Cabbage.swift */; };
+		95A6C07C1FB9AD1900F6B51D /* ShoutButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95A6C07B1FB9AD1900F6B51D /* ShoutButtonView.xib */; };
+		95A6C07E1FB9AD8800F6B51D /* ShoutButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6C07D1FB9AD8800F6B51D /* ShoutButtonView.swift */; };
+		95A6C0811FB9AEBC00F6B51D /* SetupXib+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A6C0801FB9AEBC00F6B51D /* SetupXib+UIView.swift */; };
 		95E278381FA1FFDB002B19AE /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E278371FA1FFDB002B19AE /* Plane.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +48,9 @@
 		9582245F1FA76EEC005DA0F3 /* WorldBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldBorder.swift; sourceTree = "<group>"; };
 		958224621FA779FD005DA0F3 /* CollisionCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionCategory.swift; sourceTree = "<group>"; };
 		95A64D1B1FA740630048EB6B /* Cabbage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cabbage.swift; sourceTree = "<group>"; };
+		95A6C07B1FB9AD1900F6B51D /* ShoutButtonView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShoutButtonView.xib; sourceTree = "<group>"; };
+		95A6C07D1FB9AD8800F6B51D /* ShoutButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoutButtonView.swift; sourceTree = "<group>"; };
+		95A6C0801FB9AEBC00F6B51D /* SetupXib+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SetupXib+UIView.swift"; sourceTree = "<group>"; };
 		95E278371FA1FFDB002B19AE /* Plane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				956F93D41FA0E06A00D201C8 /* ThrowableCabbage */,
+				956F93D91FA0E06A00D201C8 /* ViewController.swift */,
 				956F93EB1FA0E06B00D201C8 /* ThrowableCabbageTests */,
 				956F93D31FA0E06A00D201C8 /* Products */,
 			);
@@ -87,15 +94,10 @@
 		956F93D41FA0E06A00D201C8 /* ThrowableCabbage */ = {
 			isa = PBXGroup;
 			children = (
-				956F93D51FA0E06A00D201C8 /* AppDelegate.swift */,
-				956F93D71FA0E06A00D201C8 /* art.scnassets */,
-				956F93D91FA0E06A00D201C8 /* ViewController.swift */,
-				958224621FA779FD005DA0F3 /* CollisionCategory.swift */,
+				95A6C0821FB9B05700F6B51D /* AppSettings */,
+				95A6C07F1FB9AE9D00F6B51D /* Utils */,
+				95A6C07A1FB9ACF300F6B51D /* View */,
 				958224611FA779D6005DA0F3 /* Nodes */,
-				956F93DB1FA0E06A00D201C8 /* Main.storyboard */,
-				956F93DE1FA0E06A00D201C8 /* Assets.xcassets */,
-				956F93E01FA0E06A00D201C8 /* LaunchScreen.storyboard */,
-				956F93E31FA0E06A00D201C8 /* Info.plist */,
 			);
 			path = ThrowableCabbage;
 			sourceTree = "<group>";
@@ -117,6 +119,37 @@
 				95E278371FA1FFDB002B19AE /* Plane.swift */,
 			);
 			path = Nodes;
+			sourceTree = "<group>";
+		};
+		95A6C07A1FB9ACF300F6B51D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				956F93DB1FA0E06A00D201C8 /* Main.storyboard */,
+				95A6C07B1FB9AD1900F6B51D /* ShoutButtonView.xib */,
+				95A6C07D1FB9AD8800F6B51D /* ShoutButtonView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		95A6C07F1FB9AE9D00F6B51D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				958224621FA779FD005DA0F3 /* CollisionCategory.swift */,
+				95A6C0801FB9AEBC00F6B51D /* SetupXib+UIView.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		95A6C0821FB9B05700F6B51D /* AppSettings */ = {
+			isa = PBXGroup;
+			children = (
+				956F93E31FA0E06A00D201C8 /* Info.plist */,
+				956F93E01FA0E06A00D201C8 /* LaunchScreen.storyboard */,
+				956F93D51FA0E06A00D201C8 /* AppDelegate.swift */,
+				956F93DE1FA0E06A00D201C8 /* Assets.xcassets */,
+				956F93D71FA0E06A00D201C8 /* art.scnassets */,
+			);
+			path = AppSettings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				956F93D81FA0E06A00D201C8 /* art.scnassets in Resources */,
+				95A6C07C1FB9AD1900F6B51D /* ShoutButtonView.xib in Resources */,
 				956F93E21FA0E06A00D201C8 /* LaunchScreen.storyboard in Resources */,
 				956F93DF1FA0E06A00D201C8 /* Assets.xcassets in Resources */,
 				956F93DD1FA0E06A00D201C8 /* Main.storyboard in Resources */,
@@ -223,11 +257,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95A6C0811FB9AEBC00F6B51D /* SetupXib+UIView.swift in Sources */,
 				956F93DA1FA0E06A00D201C8 /* ViewController.swift in Sources */,
 				95A64D1C1FA740630048EB6B /* Cabbage.swift in Sources */,
 				958224631FA779FD005DA0F3 /* CollisionCategory.swift in Sources */,
 				95E278381FA1FFDB002B19AE /* Plane.swift in Sources */,
 				958224601FA76EEC005DA0F3 /* WorldBorder.swift in Sources */,
+				95A6C07E1FB9AD8800F6B51D /* ShoutButtonView.swift in Sources */,
 				956F93D61FA0E06A00D201C8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -383,7 +419,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R293VXYL28;
-				INFOPLIST_FILE = ThrowableCabbage/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ThrowableCabbage/AppSettings/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pl.mcPusz.ThrowableCabbage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -398,7 +434,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = R293VXYL28;
-				INFOPLIST_FILE = ThrowableCabbage/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ThrowableCabbage/AppSettings/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pl.mcPusz.ThrowableCabbage;
 				PRODUCT_NAME = "$(TARGET_NAME)";

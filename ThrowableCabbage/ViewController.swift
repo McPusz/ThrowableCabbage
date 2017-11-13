@@ -14,6 +14,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+    private let shoutButton = ShoutButtonView()
     private let configuration = ARWorldTrackingConfiguration()
     private var planes = [String:Plane]()
     private var cabbages = [SCNNode]()
@@ -21,6 +22,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupScene()
+        self.view.addSubview(self.shoutButton)
     }
     
     override func viewWillAppear(_ animated: Bool) {

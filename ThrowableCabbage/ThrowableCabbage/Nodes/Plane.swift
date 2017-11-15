@@ -19,7 +19,10 @@ class Plane: SCNNode {
         super.init()
         
         self.anchor = anchor
-        self.planeGeometry = SCNPlane(width: CGFloat(anchor.extent.x), height: CGFloat(anchor.extent.z))
+        let width: CGFloat = CGFloat(anchor.extent.x)
+        let length: CGFloat = CGFloat(anchor.extent.z)
+        
+        self.planeGeometry = SCNPlane(width: width, height: length)
         
         let gridMaterial = SCNMaterial()
         let gridImage = #imageLiteral(resourceName: "grid")
@@ -28,11 +31,12 @@ class Plane: SCNNode {
         
         let planeNode = SCNNode(geometry: self.planeGeometry)
         planeNode.position = SCNVector3Make(anchor.center.x, 0, anchor.center.z)
-        guard let geometry = self.planeGeometry else { return }
-        let planeShape = SCNPhysicsShape(geometry: geometry, options: nil)
-        planeNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: planeShape)
+        planeNode.physicsBody = self.getPlanePhysicsBody()
+       
+        //rotate plane to be horizontal
         planeNode.transform = SCNMatrix4MakeRotation(-.pi/2, 1, 0, 0)
         planeNode.name = Plane.name
+        
         self.setTextureScale()
         self.addChildNode(planeNode)
     }
@@ -46,7 +50,16 @@ class Plane: SCNNode {
         self.planeGeometry?.height = CGFloat(anchor.extent.z)
         
         self.position = SCNVector3Make(anchor.center.x, 0, anchor.center.z)
+        let node = self.childNodes.first
+        node?.physicsBody = self.getPlanePhysicsBody()
         self.setTextureScale()
+    }
+    
+    private func getPlanePhysicsBody() -> SCNPhysicsBody? {
+        guard let geometry = self.planeGeometry else { return nil }
+        let planeShape = SCNPhysicsShape(geometry: geometry, options: nil)
+        let body = SCNPhysicsBody(type: .kinematic, shape: planeShape)
+        return body
     }
     
     private func setTextureScale() {

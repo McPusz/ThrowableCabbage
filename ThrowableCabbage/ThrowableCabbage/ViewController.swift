@@ -9,6 +9,7 @@
 import UIKit
 import SceneKit
 import ARKit
+import RxSwift
 
 class ViewController: UIViewController, ARSCNViewDelegate {
 
@@ -16,13 +17,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     private let shoutButton = ShoutButtonView()
     private let configuration = ARWorldTrackingConfiguration()
+    private let disposeBag = DisposeBag()
     private var planes = [String:Plane]()
-    private var cabbages = [SCNNode]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupScene()
-        self.view.addSubview(self.shoutButton)
+        self.setupShouts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,6 +36,46 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
 
+    @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
+        let tapPoint = sender.location(in: self.sceneView)
+        let result = self.sceneView.hitTest(tapPoint, types: ARHitTestResult.ResultType.existingPlaneUsingExtent)
+        if result.isEmpty { return }
+        let hitResult = result.first
+        self.insertGeometry(hitPoint: hitResult)
+    }
+    
+    private func setupShouts() {
+        self.view.addSubview(self.shoutButton)
+        self.shoutButton.shout.asObservable()
+            .subscribe(onNext: { [weak self] (_) in
+                self?.explodeCabbages()
+            }).disposed(by: self.disposeBag)
+    }
+    
+    private func explodeCabbages() {
+        guard var currentCameraPosition = self.sceneView.pointOfView?.position else { return }
+        let shoutOffsetY: Float = 0.1
+        currentCameraPosition.y -= shoutOffsetY
+       
+        let cabbages = self.getSceneCabbages()
+        for cbg in cabbages {
+            cbg.explodeFrom(position: currentCameraPosition)
+        }
+    }
+    
+    private func getSceneCabbages() -> [SCNNode] {
+        let childNodes = self.sceneView.scene.rootNode.childNodes
+        var sceneCabbages = [SCNNode]()
+        for childNode in childNodes {
+           let childNodeCabbages = childNode.childNodes.filter{$0.name == Cabbage.name}
+            sceneCabbages.append(contentsOf: childNodeCabbages)
+        }
+        return sceneCabbages
+    }
+}
+
+//MARK Scene setup
+extension ViewController {
     private func setupScene() {
         self.sceneView.delegate = self
         self.sceneView.showsStatistics = true
@@ -45,7 +86,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         self.sceneView.scene = SCNScene()
         self.setupWorldBorder()
     }
-
+    
     private func setupSession() {
         let congifuration = ARWorldTrackingConfiguration()
         congifuration.planeDetection = .horizontal
@@ -82,44 +123,39 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         self.sceneView.scene.physicsWorld.contactDelegate = self
     }
     
-    @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
-        let tapPoint = sender.location(in: self.sceneView)
-        let result = self.sceneView.hitTest(tapPoint, types: ARHitTestResult.ResultType.existingPlaneUsingExtent)
-        if result.isEmpty { return }
-        let hitResult = result.first
-        self.insertGeometry(hitPoint: hitResult)
-    }
-    
     private func insertGeometry(hitPoint: ARHitTestResult?) {
         
         guard let hitPoint = hitPoint else { return }
-
-        let insertionYOffset: Float = 0.5
+        //lets cabbage fall on a grid
+        let insertOffsetY: Float = 0.3
         let xPos = hitPoint.worldTransform.columns.3.x
-        let yPos = hitPoint.worldTransform.columns.3.y
+        let yPos = hitPoint.worldTransform.columns.3.y + insertOffsetY
         let zPos = hitPoint.worldTransform.columns.3.z
-        let position = SCNVector3Make(xPos, yPos + insertionYOffset, zPos)
+        let position = SCNVector3Make(xPos, yPos, zPos)
         let cabbageNode = Cabbage(at: position, fromSceneView: self.sceneView)
-        self.cabbages.append(cabbageNode)
         self.sceneView.scene.rootNode.addChildNode(cabbageNode)
     }
+    
 }
 
+//MARK: Physics
 extension ViewController: SCNPhysicsContactDelegate {
     
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-
-        if self.nodeAIsWorld(contact: contact) {
+        
+        guard let nodeAIsWorld = self.nodeAIsWorld(contact: contact) else { return }
+        
+        if nodeAIsWorld {
             contact.nodeB.removeFromParentNode()
         } else {
             contact.nodeA.removeFromParentNode()
         }
     }
     
-    private func nodeAIsWorld(contact: SCNPhysicsContact) -> Bool {
-        guard let bitMaskA = contact.nodeA.physicsBody?.categoryBitMask, let bitMaskB = contact.nodeB.physicsBody?.categoryBitMask else { return false }
+    private func nodeAIsWorld(contact: SCNPhysicsContact) -> Bool? {
+        guard let bitMaskA = contact.nodeA.physicsBody?.categoryBitMask, let bitMaskB = contact.nodeB.physicsBody?.categoryBitMask else { return nil }
         let contactMask = bitMaskA | bitMaskB
-        guard contactMask == (CollisionCategory.world.rawValue | CollisionCategory.cabbage.rawValue) else { return false }
+        guard contactMask == (CollisionCategory.world.rawValue | CollisionCategory.cabbage.rawValue) else { return nil }
         return contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.world.rawValue
     }
 }

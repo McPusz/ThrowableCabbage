@@ -11,6 +11,7 @@ import SceneKit
 import ARKit
 
 class WorldBorder: SCNNode {
+    static let name = "WorldBorder"
     
     override init() {
         super.init()
@@ -21,7 +22,7 @@ class WorldBorder: SCNNode {
         
         let borderNode = SCNNode(geometry: bottomGeometry)
         borderNode.position = SCNVector3Make(0, -10, 0)
-        borderNode.name = "WorldBorder"
+        borderNode.name = WorldBorder.name
         
         borderNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
         borderNode.physicsBody?.categoryBitMask = CollisionCategory.world.rawValue

@@ -19,6 +19,9 @@
                     <rect key="frame" x="0.0" y="0.0" width="462" height="72"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <state key="normal" image="shout"/>
+                    <connections>
+                        <action selector="shoutTapped:" destination="-1" eventType="touchUpInside" id="LSE-nm-N5j"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

@@ -10,6 +10,7 @@ import ARKit
 import SceneKit
 
 class Plane: SCNNode {
+    static let name = "GridPlane"
     
     private var anchor: ARPlaneAnchor?
     private var planeGeometry: SCNPlane?
@@ -31,7 +32,7 @@ class Plane: SCNNode {
         let planeShape = SCNPhysicsShape(geometry: geometry, options: nil)
         planeNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: planeShape)
         planeNode.transform = SCNMatrix4MakeRotation(-.pi/2, 1, 0, 0)
-        planeNode.name = "GridPlane"
+        planeNode.name = Plane.name
         self.setTextureScale()
         self.addChildNode(planeNode)
     }

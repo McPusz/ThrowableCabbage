@@ -7,11 +7,18 @@
 //
 
 import UIKit
+import RxSwift
 
 class ShoutButtonView: UIView {
 
     private let nibName: String = "ShoutButtonView"
   
+    private(set) var shout: PublishSubject<Void> = PublishSubject<Void>()
+    
+    @IBAction func shoutTapped(_ sender: UIButton) {
+        self.shout.onNext(())
+    }
+    
     override init(frame: CGRect) {
         let phoneFrame = UIScreen.main.bounds
         let viewHeight: CGFloat = phoneFrame.height/5

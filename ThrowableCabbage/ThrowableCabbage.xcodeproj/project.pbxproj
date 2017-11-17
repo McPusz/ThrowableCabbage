@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9446EAAC484A64E8CD7BA6F4 /* Pods_ThrowableCabbage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B488F1344F471380E1F27D /* Pods_ThrowableCabbage.framework */; };
+		95622ECF1FBD6D55002CB533 /* ShoutSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95622ECE1FBD6D55002CB533 /* ShoutSound.swift */; };
+		95622ED21FBDD5A9002CB533 /* DelaingObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95622ED11FBDD5A9002CB533 /* DelaingObservable.swift */; };
+		95622ED41FBED908002CB533 /* UnrelentingForce.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 95622ED31FBED87F002CB533 /* UnrelentingForce.mp3 */; };
 		956F93D61FA0E06A00D201C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956F93D51FA0E06A00D201C8 /* AppDelegate.swift */; };
 		956F93D81FA0E06A00D201C8 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 956F93D71FA0E06A00D201C8 /* art.scnassets */; };
 		956F93DA1FA0E06A00D201C8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956F93D91FA0E06A00D201C8 /* ViewController.swift */; };
@@ -40,6 +43,9 @@
 		3BD5C869A38AADFA40D3AD46 /* Pods-ThrowableCabbageTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThrowableCabbageTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ThrowableCabbageTests/Pods-ThrowableCabbageTests.release.xcconfig"; sourceTree = "<group>"; };
 		3C9FDE274F89C1EB8F821D05 /* Pods-ThrowableCabbageTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThrowableCabbageTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ThrowableCabbageTests/Pods-ThrowableCabbageTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6CFEDAF8A52FDD10B4A98D32 /* Pods-ThrowableCabbage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThrowableCabbage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ThrowableCabbage/Pods-ThrowableCabbage.debug.xcconfig"; sourceTree = "<group>"; };
+		95622ECE1FBD6D55002CB533 /* ShoutSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoutSound.swift; sourceTree = "<group>"; };
+		95622ED11FBDD5A9002CB533 /* DelaingObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelaingObservable.swift; sourceTree = "<group>"; };
+		95622ED31FBED87F002CB533 /* UnrelentingForce.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = UnrelentingForce.mp3; sourceTree = "<group>"; };
 		956F93D21FA0E06A00D201C8 /* ThrowableCabbage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThrowableCabbage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		956F93D51FA0E06A00D201C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		956F93D71FA0E06A00D201C8 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -120,7 +126,7 @@
 				95A6C0821FB9B05700F6B51D /* AppSettings */,
 				95A6C07F1FB9AE9D00F6B51D /* Utils */,
 				95A6C07A1FB9ACF300F6B51D /* View */,
-				958224611FA779D6005DA0F3 /* Nodes */,
+				958224611FA779D6005DA0F3 /* Models */,
 			);
 			path = ThrowableCabbage;
 			sourceTree = "<group>";
@@ -134,14 +140,16 @@
 			path = ThrowableCabbageTests;
 			sourceTree = "<group>";
 		};
-		958224611FA779D6005DA0F3 /* Nodes */ = {
+		958224611FA779D6005DA0F3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				9582245F1FA76EEC005DA0F3 /* WorldBorder.swift */,
 				95A64D1B1FA740630048EB6B /* Cabbage.swift */,
 				95E278371FA1FFDB002B19AE /* Plane.swift */,
+				95622ECE1FBD6D55002CB533 /* ShoutSound.swift */,
+				95622ED11FBDD5A9002CB533 /* DelaingObservable.swift */,
 			);
-			path = Nodes;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		95A6C07A1FB9ACF300F6B51D /* View */ = {
@@ -171,6 +179,7 @@
 				956F93E01FA0E06A00D201C8 /* LaunchScreen.storyboard */,
 				956F93D51FA0E06A00D201C8 /* AppDelegate.swift */,
 				956F93DE1FA0E06A00D201C8 /* Assets.xcassets */,
+				95622ED31FBED87F002CB533 /* UnrelentingForce.mp3 */,
 				956F93D71FA0E06A00D201C8 /* art.scnassets */,
 			);
 			path = AppSettings;
@@ -276,6 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95622ED41FBED908002CB533 /* UnrelentingForce.mp3 in Resources */,
 				956F93D81FA0E06A00D201C8 /* art.scnassets in Resources */,
 				95A6C07C1FB9AD1900F6B51D /* ShoutButtonView.xib in Resources */,
 				956F93E21FA0E06A00D201C8 /* LaunchScreen.storyboard in Resources */,
@@ -403,10 +413,12 @@
 				95A6C0811FB9AEBC00F6B51D /* SetupXib+UIView.swift in Sources */,
 				956F93DA1FA0E06A00D201C8 /* ViewController.swift in Sources */,
 				95A64D1C1FA740630048EB6B /* Cabbage.swift in Sources */,
+				95622ECF1FBD6D55002CB533 /* ShoutSound.swift in Sources */,
 				958224631FA779FD005DA0F3 /* CollisionCategory.swift in Sources */,
 				95A6C0841FBB254800F6B51D /* Explode+SCNNode.swift in Sources */,
 				95E278381FA1FFDB002B19AE /* Plane.swift in Sources */,
 				958224601FA76EEC005DA0F3 /* WorldBorder.swift in Sources */,
+				95622ED21FBDD5A9002CB533 /* DelaingObservable.swift in Sources */,
 				95A6C07E1FB9AD8800F6B51D /* ShoutButtonView.swift in Sources */,
 				956F93D61FA0E06A00D201C8 /* AppDelegate.swift in Sources */,
 			);

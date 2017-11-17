@@ -12,11 +12,14 @@ import RxSwift
 class ShoutButtonView: UIView {
 
     private let nibName: String = "ShoutButtonView"
-  
+    private let sound: ShoutSound = ShoutSound()
     private(set) var shout: PublishSubject<Void> = PublishSubject<Void>()
+    private var disposeBag = DisposeBag()
     
     @IBAction func shoutTapped(_ sender: UIButton) {
-        self.shout.onNext(())
+        self.sound.play().subscribe(onSuccess: { [weak self] (_) in
+            self?.shout.onNext(())
+        }).disposed(by: self.disposeBag)
     }
     
     override init(frame: CGRect) {
